@@ -25,6 +25,8 @@ This is especially useful in larger solutions where a single failure usually mak
 - **Less output noise** - focus on the first real error instead of scrolling through follow-up failures
 - **Built into Visual Studio** - toggle the behavior from the **Build** menu when you need it
 
+![Output Window](art/output-window.png)
+
 ## Getting started
 
 1. Install the extension from the [Visual Studio Marketplace][marketplace].
@@ -47,8 +49,6 @@ This is especially useful in larger solutions where a single failure usually mak
 - The command is only shown when a solution with multiple projects is open.
 - This extension targets Visual Studio 2022 on both amd64 and arm64.
 - CI builds are available on [VSIX Gallery][ci-build], and publishing is handled by the [Build workflow][build].
-
-<!-- TODO: Add screenshot or GIF showing a multi-project build stopping after the first error. -->
 
 ## How can I help?
 
