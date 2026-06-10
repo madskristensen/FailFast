@@ -1,18 +1,14 @@
-using System;
 using System.IO;
 using System.Threading.Tasks;
 using EnvDTE;
 using EnvDTE80;
 using Microsoft.VisualStudio;
-using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 
 namespace FailFast
 {
     internal sealed class BuildFailFastController : IDisposable
     {
-        private const string CancelBuildCommand = "Build.Cancel";
-
         private readonly DTE2 _dte;
         private readonly IVsOutputWindowPane _buildOutputPane;
         private readonly IVsSolutionBuildManager2 _solutionBuildManager;
@@ -39,33 +35,22 @@ namespace FailFast
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
-            var dte = await package.GetServiceAsync(typeof(EnvDTE.DTE)) as DTE2;
-            if (dte == null)
-            {
-                throw new InvalidOperationException("Could not get DTE service.");
-            }
+            // Get the "Build" Output Window pane
+            IVsOutputWindow outputWindow = await package.GetServiceAsync<SVsOutputWindow, IVsOutputWindow>() ?? throw new InvalidOperationException("Could not get SVsOutputWindow service.");
 
-            var outputWindow = await package.GetServiceAsync(typeof(SVsOutputWindow)) as IVsOutputWindow;
-            if (outputWindow == null)
-            {
-                throw new InvalidOperationException("Could not get output window service.");
-            }
-
-            var buildPaneGuid = VSConstants.OutputWindowPaneGuid.BuildOutputPane_guid;
-            ErrorHandler.ThrowOnFailure(outputWindow.GetPane(ref buildPaneGuid, out var buildOutputPane));
+            Guid buildPaneGuid = VSConstants.OutputWindowPaneGuid.BuildOutputPane_guid;
+            ErrorHandler.ThrowOnFailure(outputWindow.GetPane(ref buildPaneGuid, out IVsOutputWindowPane? buildOutputPane));
 
             if (buildOutputPane == null)
             {
                 throw new InvalidOperationException("Could not get build output pane.");
             }
 
-            var solutionBuildManager = await package.GetServiceAsync(typeof(SVsSolutionBuildManager)) as IVsSolutionBuildManager2;
-            if (solutionBuildManager == null)
-            {
-                throw new InvalidOperationException("Could not get solution build manager service.");
-            }
+            // Get additional services
+            DTE2 dte = await package.GetServiceAsync<DTE, DTE2>() ?? throw new InvalidOperationException("Could not get DTE service.");
+            IVsSolutionBuildManager2 buildManager = await package.GetServiceAsync<SVsSolutionBuildManager, IVsSolutionBuildManager2>() ?? throw new InvalidOperationException("Could not get SVsSolutionBuildManager service.");
 
-            return new BuildFailFastController(dte, buildOutputPane, solutionBuildManager);
+            return new BuildFailFastController(dte, buildOutputPane, buildManager);
         }
 
         public void SetEnabled(bool enabled)
@@ -114,13 +99,11 @@ namespace FailFast
             ThreadHelper.ThrowIfNotOnUIThread();
 
             ErrorHandler.ThrowOnFailure(_solutionBuildManager.CanCancelUpdateSolutionConfiguration(out var canCancel));
+
             if (canCancel != 0)
             {
                 ErrorHandler.ThrowOnFailure(_solutionBuildManager.CancelUpdateSolutionConfiguration());
-                return;
             }
-
-            _dte.ExecuteCommand(CancelBuildCommand);
         }
     }
 }
