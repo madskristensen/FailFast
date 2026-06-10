@@ -7,6 +7,7 @@
 # Fail Fast for Visual Studio
 
 [![Build](https://github.com/madskristensen/FailFast/actions/workflows/build.yaml/badge.svg)](https://github.com/madskristensen/FailFast/actions/workflows/build.yaml)
+[![Install from VSIX Gallery](https://www.vsixgallery.com/badge/FailFast.897947cf-5417-419c-9d8e-450b9480b07d.png)][ci-build]
 ![GitHub Sponsors](https://img.shields.io/github/sponsors/madskristensen)
 
 Download this extension from the [Visual Studio Marketplace][marketplace] or grab the latest CI build from [VSIX Gallery][ci-build].
