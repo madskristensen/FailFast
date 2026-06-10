@@ -1,6 +1,7 @@
 [marketplace]: <https://marketplace.visualstudio.com/items?itemName=MadsKristensen.FailFast>
 [repo]: <https://github.com/madskristensen/FailFast>
 [build]: <https://github.com/madskristensen/FailFast/actions/workflows/build.yaml>
+[ci-build]: <https://www.vsixgallery.com/extension/FailFast.897947cf-5417-419c-9d8e-450b9480b07d>
 [inspiration]: <https://marketplace.visualstudio.com/items?itemName=EinarEgilsson.StopOnFirstBuildError>
 
 # Fail Fast for Visual Studio
@@ -8,7 +9,7 @@
 [![Build](https://github.com/madskristensen/FailFast/actions/workflows/build.yaml/badge.svg)](https://github.com/madskristensen/FailFast/actions/workflows/build.yaml)
 ![GitHub Sponsors](https://img.shields.io/github/sponsors/madskristensen)
 
-Download this extension from the [Visual Studio Marketplace][marketplace].
+Download this extension from the [Visual Studio Marketplace][marketplace] or grab the latest CI build from [VSIX Gallery][ci-build].
 
 ---
 
@@ -45,7 +46,7 @@ This is especially useful in larger solutions where a single failure usually mak
 
 - The command is only shown when a solution with multiple projects is open.
 - This extension targets Visual Studio 2022 on both amd64 and arm64.
-- CI builds and publishing are handled by the [Build workflow][build].
+- CI builds are available on [VSIX Gallery][ci-build], and publishing is handled by the [Build workflow][build].
 
 <!-- TODO: Add screenshot or GIF showing a multi-project build stopping after the first error. -->
 
