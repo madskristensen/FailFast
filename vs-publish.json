@@ -6,7 +6,10 @@
     "tags": [ "build", "fast", "cancel" ]
   },
   "assetFiles": [
-
+    {
+      "pathOnDisk": "art/output-window.png",
+      "targetPath": "art/output-window.png"
+    }
   ],
   "overview": "README.md",
   "publisher": "MadsKristensen",
