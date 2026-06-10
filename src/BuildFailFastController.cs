@@ -17,6 +17,9 @@ namespace FailFast
             _buildOutputPane = buildOutputPane;
             _solutionBuildManager = solutionBuildManager;
 
+            // ProjectBuildDone only fires for build/rebuild operations. Clean operations raise the
+            // separate ProjectCleanDone event, so a project that fails to clean (e.g. a failed COM
+            // unregistration step) never triggers a fail-fast cancellation of the whole solution.
             VS.Events.BuildEvents.SolutionBuildStarted += OnSolutionBuildStarted;
             VS.Events.BuildEvents.SolutionBuildDone += OnSolutionBuildDone;
             VS.Events.BuildEvents.SolutionBuildCancelled += OnSolutionBuildCancelled;
@@ -88,7 +91,7 @@ namespace FailFast
             CancelBuildImmediately();
 
             var projectName = args.Project?.Name ?? "Unknown";
-            var message = $"FailFast: Build cancelled because project \"{projectName}\" failed at {DateTime.Now:HH:mm:ss}.{Environment.NewLine}";
+            var message = $"{Vsix.Name}: Build cancelled because project \"{projectName}\" failed at {DateTime.Now:HH:mm:ss}.{Environment.NewLine}";
             ErrorHandler.ThrowOnFailure(_buildOutputPane.OutputStringThreadSafe(message));
         }
 

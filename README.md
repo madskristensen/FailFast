@@ -41,11 +41,13 @@ This is especially useful in larger solutions where a single failure usually mak
 
 - Watches solution builds in Visual Studio
 - Cancels the build after the first failed project
+- Only affects **Build** and **Rebuild** - **Clean** operations are never cancelled
 - Writes a `FailFast:` message to the Build output pane when cancellation happens
 - Remembers whether the feature is enabled
 
 ## Notes
 
+- **Clean is never interrupted.** Fail Fast only reacts to build and rebuild operations, so a project that fails to clean (for example, when a COM unregistration step fails) will not cancel the clean of the other projects.
 - The command is only shown when a solution with multiple projects is open.
 - This extension targets Visual Studio 2022 on both amd64 and arm64.
 - CI builds are available on [VSIX Gallery][ci-build], and publishing is handled by the [Build workflow][build].
