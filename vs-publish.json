@@ -13,6 +13,10 @@
     {
       "pathOnDisk": "art/build-menu.png",
       "targetPath": "art/build-menu.png"
+    },
+    {
+      "pathOnDisk": "art/benchmark.png",
+      "targetPath": "art/benchmark.png"
     }
   ],
   "overview": "README.md",
