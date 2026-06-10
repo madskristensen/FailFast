@@ -1,6 +1,7 @@
 [marketplace]: <https://marketplace.visualstudio.com/items?itemName=MadsKristensen.FailFast>
 [repo]: <https://github.com/madskristensen/FailFast>
 [build]: <https://github.com/madskristensen/FailFast/actions/workflows/build.yaml>
+[inspiration]: <https://marketplace.visualstudio.com/items?itemName=EinarEgilsson.StopOnFirstBuildError>
 
 # Fail Fast for Visual Studio
 
@@ -14,6 +15,8 @@ Download this extension from the [Visual Studio Marketplace][marketplace].
 **Fail Fast stops a solution build as soon as the first project fails.** Instead of waiting for the rest of the projects to continue compiling, the extension cancels the build immediately and writes a short explanation to the Build output window.
 
 This is especially useful in larger solutions where a single failure usually makes the rest of the build irrelevant.
+
+> This extension was inspired by Einar Egilsson's [Stop on first build error][inspiration].
 
 ## Why use it?
 

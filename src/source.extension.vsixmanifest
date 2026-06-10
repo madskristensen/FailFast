@@ -3,7 +3,7 @@
   <Metadata>
     <Identity Id="FailFast.897947cf-5417-419c-9d8e-450b9480b07d" Version="1.0.900" Language="en-US" Publisher="Mads Kristensen" />
     <DisplayName>Fail Fast</DisplayName>
-    <Description>Stops the build on the first build error</Description>
+    <Description>Cancels a solution build as soon as the first project fails, helping you find the real error faster and avoid waiting for the rest of the build.</Description>
     <MoreInfo>https://github.com/madskristensen/FailFast</MoreInfo>
     <License>Resources\License.txt</License>
     <Icon>Resources\Icon.png</Icon>

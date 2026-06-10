@@ -10,7 +10,7 @@ namespace FailFast
     {
         public const string Id = "FailFast.897947cf-5417-419c-9d8e-450b9480b07d";
         public const string Name = "Fail Fast";
-        public const string Description = @"Stops the build on the first build error";
+        public const string Description = @"Cancels a solution build as soon as the first project fails, helping you find the real error faster and avoid waiting for the rest of the build.";
         public const string Language = "en-US";
         public const string Version = "1.0.900";
         public const string Author = "Mads Kristensen";
