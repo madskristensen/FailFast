@@ -14,11 +14,19 @@ Download this extension from the [Visual Studio Marketplace][marketplace] or gra
 
 ---
 
+**Stop waiting on builds that have already failed.**
+
 **Fail Fast stops a solution build as soon as the first project fails.** Instead of waiting for the rest of the projects to continue compiling, the extension cancels the build immediately and writes a short explanation to the Build output window.
 
-This is especially useful in larger solutions where a single failure usually makes the rest of the build irrelevant.
-
 > This extension was inspired by Einar Egilsson's [Stop on first build error][inspiration].
+
+## The problem
+
+You make a small change, hit build, and one project breaks early on. But Visual Studio keeps going - compiling dozens of downstream projects that depend on the broken one and can never succeed. You sit and wait, watching the output scroll, just to be told what you already knew seconds ago: the build failed.
+
+In a large solution, that wasted wait happens on *every* failed build, dozens of times a day. It adds up fast.
+
+**Fail Fast gives you that time back.** The moment the first project fails, the build stops. You see the error, fix it, and build again - no waiting around.
 
 ## Why use it?
 
@@ -27,6 +35,25 @@ This is especially useful in larger solutions where a single failure usually mak
 - **Built into Visual Studio** - toggle the behavior from the **Build** menu when you need it
 
 ![Output Window](art/output-window.png)
+
+## Real-world example
+
+To see how much time this saves, I introduced a single syntax error in the **OrchardCore.Abstractions** project of the large [OrchardCore](https://github.com/OrchardCMS/OrchardCore) solution and built it three times with Fail Fast enabled and three times with it disabled.
+
+<!--
+| Run         | Fail Fast enabled | Fail Fast disabled |
+| ----------- | ----------------: | -----------------: |
+| 1           |               10s |                53s |
+| 2           |                3s |                31s |
+| 3           |                2s |                30s |
+| **Average** |            **5s** |            **38s** |
+/-->
+
+![Build time comparison](art/benchmark.png)
+
+Because OrchardCore.Abstractions sits near the bottom of the dependency graph, almost every other project depends on it. Without Fail Fast, Visual Studio keeps churning through projects that can never succeed. With Fail Fast enabled, the build stops the moment the first project fails - roughly **7.6x faster** and about **33 seconds saved** per build in this case.
+
+In a tight edit-build-fix loop, that difference adds up to minutes saved every hour. If you trigger 30 failed builds a day, that's around **15 minutes reclaimed daily** - on a single solution.
 
 ## Getting started
 
@@ -52,6 +79,26 @@ This is especially useful in larger solutions where a single failure usually mak
 - The command is only shown when a solution with multiple projects is open.
 - This extension targets Visual Studio 2022 on both amd64 and arm64.
 - CI builds are available on [VSIX Gallery][ci-build], and publishing is handled by the [Build workflow][build].
+
+## FAQ
+
+### Does it slow down successful builds?
+No. Fail Fast only acts when a project *fails*. A build that succeeds runs exactly as it normally would.
+
+### Does it interrupt Clean operations?
+No. Only **Build** and **Rebuild** are cancelled on failure. A project that fails to clean (for example, a failed COM unregistration step) never cancels the clean of the other projects.
+
+### Is the setting global or per-solution?
+The enabled/disabled state is remembered globally and applies across solutions. Toggle it any time from **Build > Stop Build on First Error**.
+
+### How do I turn it off temporarily?
+Use the **Build** menu to toggle it off, run your build, and toggle it back on when you're done. No restart required.
+
+### Why don't I see the command?
+The command only appears when a solution with multiple projects is open, since fail-fast behavior only matters for multi-project builds.
+
+### Which versions of Visual Studio are supported?
+Visual Studio 2022 (and newer) on both amd64 and arm64.
 
 ## How can I help?
 
