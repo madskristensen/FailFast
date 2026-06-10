@@ -8,14 +8,16 @@ namespace FailFast
     {
         private readonly IVsOutputWindowPane _buildOutputPane;
         private readonly IVsSolutionBuildManager2 _solutionBuildManager;
+        private readonly RatingPrompt _prompt;
         private bool _canCancelBuild;
 
-        private BuildFailFastController(IVsOutputWindowPane buildOutputPane, IVsSolutionBuildManager2 solutionBuildManager)
+        private BuildFailFastController(IVsOutputWindowPane buildOutputPane, IVsSolutionBuildManager2 solutionBuildManager, FailFastOptions options)
         {
             ThreadHelper.ThrowIfNotOnUIThread();
 
             _buildOutputPane = buildOutputPane;
             _solutionBuildManager = solutionBuildManager;
+            _prompt = new RatingPrompt("MadsKristensen.FailFast", Vsix.Name, options);
 
             // ProjectBuildDone only fires for build/rebuild operations. Clean operations raise the
             // separate ProjectCleanDone event, so a project that fails to clean (e.g. a failed COM
@@ -28,7 +30,7 @@ namespace FailFast
 
         public bool Enabled { get; private set; } = true;
 
-        public static async Task<BuildFailFastController> CreateAsync(AsyncPackage package)
+        public static async Task<BuildFailFastController> CreateAsync(AsyncPackage package, FailFastOptions options)
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
@@ -44,7 +46,7 @@ namespace FailFast
 
             IVsSolutionBuildManager2 buildManager = await package.GetServiceAsync<SVsSolutionBuildManager, IVsSolutionBuildManager2>() ?? throw new InvalidOperationException("Could not get SVsSolutionBuildManager service.");
 
-            return new BuildFailFastController(buildOutputPane, buildManager);
+            return new BuildFailFastController(buildOutputPane, buildManager, options);
         }
 
         public void SetEnabled(bool enabled)
@@ -104,6 +106,7 @@ namespace FailFast
             if (canCancel != 0)
             {
                 ErrorHandler.ThrowOnFailure(_solutionBuildManager.CancelUpdateSolutionConfiguration());
+                _prompt.RegisterSuccessfulUsage();
             }
         }
     }

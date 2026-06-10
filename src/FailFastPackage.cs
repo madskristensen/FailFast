@@ -22,7 +22,7 @@ namespace FailFast
             await this.RegisterCommandsAsync();
 
             FailFastOptions options = await FailFastOptions.GetLiveInstanceAsync();
-            _controller = await BuildFailFastController.CreateAsync(this);
+            _controller = await BuildFailFastController.CreateAsync(this, options);
             _controller.SetEnabled(options.Enabled);
         }
 
