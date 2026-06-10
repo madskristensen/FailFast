@@ -9,6 +9,10 @@
     {
       "pathOnDisk": "art/output-window.png",
       "targetPath": "art/output-window.png"
+    },
+    {
+      "pathOnDisk": "art/build-menu.png",
+      "targetPath": "art/build-menu.png"
     }
   ],
   "overview": "README.md",

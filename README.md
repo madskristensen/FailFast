@@ -36,7 +36,7 @@ This is especially useful in larger solutions where a single failure usually mak
 4. Start a build as usual.
 5. When a project fails, Fail Fast cancels the remaining build immediately.
 
-<!-- TODO: Add screenshot of the Build menu toggle here. -->
+![Build menu](art/build-menu.png)
 
 ## What it does
 
