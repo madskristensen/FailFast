@@ -21,10 +21,6 @@
 		</Buttons>
 	</Commands>
 
-	<VisibilityConstraints>
-		<VisibilityItem guid="FailFast" id="ToggleFailFastCommand" context="UICONTEXT_SolutionHasMultipleProjects" />
-	</VisibilityConstraints>
-
 	<Symbols>
 		<GuidSymbol name="FailFast" value="{35066804-bfb3-4363-9dff-807d8cfb29d6}">
 			<IDSymbol name="ToggleFailFastCommand" value="0x0102" />
