@@ -23,10 +23,7 @@ namespace FailFast
 
             FailFastOptions options = await FailFastOptions.GetLiveInstanceAsync();
             _controller = await BuildFailFastController.CreateAsync(this, options);
-            _controller.SetEnabled(options.Enabled);
         }
-
-        internal void ApplyEnabledState(bool enabled) => _controller?.SetEnabled(enabled);
 
         protected override void Dispose(bool disposing)
         {

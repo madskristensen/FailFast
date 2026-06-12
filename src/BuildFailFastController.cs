@@ -8,6 +8,7 @@ namespace FailFast
     {
         private readonly IVsOutputWindowPane _buildOutputPane;
         private readonly IVsSolutionBuildManager2 _solutionBuildManager;
+        private readonly FailFastOptions _options;
         private readonly RatingPrompt _prompt;
         private bool _canCancelBuild;
 
@@ -17,6 +18,7 @@ namespace FailFast
 
             _buildOutputPane = buildOutputPane;
             _solutionBuildManager = solutionBuildManager;
+            _options = options;
             _prompt = new RatingPrompt("MadsKristensen.FailFast", Vsix.Name, options);
 
             // ProjectBuildDone only fires for build/rebuild operations. Clean operations raise the
@@ -27,8 +29,6 @@ namespace FailFast
             VS.Events.BuildEvents.SolutionBuildCancelled += OnSolutionBuildCancelled;
             VS.Events.BuildEvents.ProjectBuildDone += OnProjectBuildDone;
         }
-
-        public bool Enabled { get; private set; } = true;
 
         public static async Task<BuildFailFastController> CreateAsync(AsyncPackage package, FailFastOptions options)
         {
@@ -47,11 +47,6 @@ namespace FailFast
             IVsSolutionBuildManager2 buildManager = await package.GetServiceAsync<SVsSolutionBuildManager, IVsSolutionBuildManager2>() ?? throw new InvalidOperationException("Could not get SVsSolutionBuildManager service.");
 
             return new BuildFailFastController(buildOutputPane, buildManager, options);
-        }
-
-        public void SetEnabled(bool enabled)
-        {
-            Enabled = enabled;
         }
 
         public void Dispose()
@@ -84,7 +79,7 @@ namespace FailFast
         {
             ThreadHelper.ThrowIfNotOnUIThread();
 
-            if (!_canCancelBuild || !Enabled || args.IsSuccessful)
+            if (!_canCancelBuild || !_options.Enabled || args.IsSuccessful)
             {
                 return;
             }

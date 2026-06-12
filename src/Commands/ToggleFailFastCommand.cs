@@ -12,7 +12,6 @@
             options.Enabled = !options.Enabled;
             await options.SaveAsync();
 
-            ((FailFastPackage)Package).ApplyEnabledState(options.Enabled);
             Command.Checked = options.Enabled;
         }
 
