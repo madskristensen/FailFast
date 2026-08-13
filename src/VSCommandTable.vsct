@@ -14,8 +14,8 @@
 				<CommandFlag>DefaultInvisible</CommandFlag>
 				<CommandFlag>DynamicVisibility</CommandFlag>
 				<Strings>
-					<ButtonText>Stop Build on First Error</ButtonText>
-					<LocCanonicalName>.FailFast.StopBuildOnFirstError</LocCanonicalName>
+					<ButtonText>Skip Build Dependants on Error</ButtonText>
+					<LocCanonicalName>.FailFast.SkipBuildDependantsOnError</LocCanonicalName>
 				</Strings>
 			</Button>
 		</Buttons>
